@@ -8,3 +8,5 @@ Route::get('/', function () {
 });
 // Prueba que todo okey... 
 Route::get('/public', [PublicApiController::class, 'test']);
+Route::get('/categories', [PublicApiController::class, 'categories']);
+

@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api\Public;
+namespace App\Http\Controllers\Api\public;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller; 
+use App\Models\Category; 
 
 class PublicApiController extends Controller
 {
@@ -12,5 +13,11 @@ class PublicApiController extends Controller
             'status' => 'ok',
             'message' => 'API funcionando correctamente',
         ], 200);
-    }
+    } 
+
+  public function categories()
+{
+    $categories = Category::all();
+    return view('publicTest', compact('categories'));
+}
 }
