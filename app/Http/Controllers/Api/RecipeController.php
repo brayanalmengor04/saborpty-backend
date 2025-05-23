@@ -11,7 +11,6 @@ class RecipeController extends Controller
     // POST: Crear receta usando category_id por URL (sin validación personalizada)
     public function storeByCategory(Request $request, $id)
     {
-        // Asumimos que el frontend está enviando correctamente estos campos
         $recipe = Recipe::create([
             'title' => $request->input('title'),
             'description' => $request->input('description'),
@@ -21,8 +20,6 @@ class RecipeController extends Controller
             'image_url' => $request->input('imageUrl'),
             'category_id' => $id
         ]);
-
-        // Cargar la relación con categoría
         $recipe->load('category');
 
         return response()->json([
@@ -38,11 +35,7 @@ class RecipeController extends Controller
     } 
 
     // GET: Todas las recetas (sin relaciones)
-    public function getAllRaw()
-    {
-        return response()->json(Recipe::all());
-    }
-
+    public function getAllRaw(){return response()->json(Recipe::all());}
     // GET: Todas las recetas con categoryName (relación con categoría)
     public function getAllWithCategoryName()
     {
