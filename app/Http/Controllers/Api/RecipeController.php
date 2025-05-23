@@ -1,65 +1,64 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
-use App\Models\Recipe;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Recipe;
 
 class RecipeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    // POST: Crear receta usando category_id por URL (sin validación personalizada)
+    public function storeByCategory(Request $request, $id)
     {
-        //
+        // Asumimos que el frontend está enviando correctamente estos campos
+        $recipe = Recipe::create([
+            'title' => $request->input('title'),
+            'description' => $request->input('description'),
+            'duration_minutes' => $request->input('durationMinutes'),
+            'difficulty' => strtolower($request->input('difficulty')),
+            'rating' => $request->input('rating'),
+            'image_url' => $request->input('imageUrl'),
+            'category_id' => $id
+        ]);
+
+        // Cargar la relación con categoría
+        $recipe->load('category');
+
+        return response()->json([
+            'id' => $recipe->id,
+            'title' => $recipe->title,
+            'description' => $recipe->description,
+            'categoryName' => $recipe->category->name,
+            'durationMinutes' => $recipe->duration_minutes,
+            'difficulty' => ucfirst($recipe->difficulty),
+            'rating' => $recipe->rating,
+            'imageUrl' => $recipe->image_url,
+        ], 201);
+    } 
+
+    // GET: Todas las recetas (sin relaciones)
+    public function getAllRaw()
+    {
+        return response()->json(Recipe::all());
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    // GET: Todas las recetas con categoryName (relación con categoría)
+    public function getAllWithCategoryName()
     {
-        //
-    }
+        $recipes = Recipe::with('category')->get()->map(function ($recipe) {
+            return [
+                'id' => $recipe->id,
+                'title' => $recipe->title,
+                'description' => $recipe->description,
+                'categoryName' => $recipe->category->name,
+                'durationMinutes' => $recipe->duration_minutes,
+                'difficulty' => strtolower($recipe->difficulty),
+                'rating' => $recipe->rating,
+                'imageUrl' => $recipe->image_url,
+            ];
+        });
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Recipe $recipe)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Recipe $recipe)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Recipe $recipe)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Recipe $recipe)
-    {
-        //
+        return response()->json($recipes);
     }
 }
