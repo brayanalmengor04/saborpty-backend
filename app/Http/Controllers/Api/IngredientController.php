@@ -1,65 +1,34 @@
 <?php
 
-namespace App\Http\Controllers;
-
+namespace App\Http\Controllers\Api; 
+use App\Http\Controllers\Controller; 
 use App\Models\Ingredient;
 use Illuminate\Http\Request;
+use App\Models\Recipe;
 
 class IngredientController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+  public function getIngredientsByRecipe($id)
     {
-        //
-    }
+        // Obtener receta con ingredientes y categoría
+        $recipe = Recipe::with(['ingredients', 'category'])->find($id);
+        if (!$recipe) {
+            return response()->json(['message' => 'Recipe not found'], 404);
+        }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Ingredient $ingredient)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Ingredient $ingredient)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Ingredient $ingredient)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Ingredient $ingredient)
-    {
-        //
+        return response()->json([
+            'recipe' => [
+                'id' => $recipe->id,
+                'title' => $recipe->title,
+                'description' => $recipe->description,
+                'duration_minutes' => $recipe->duration_minutes,
+                'difficulty' => $recipe->difficulty,
+                'rating' => $recipe->rating,
+                'image_url' => $recipe->image_url,
+                'steps' => $recipe->steps,
+                'category_name' => optional($recipe->category)->name, 
+            ],
+            'ingredients' => $recipe->ingredients
+        ]);
     }
 }

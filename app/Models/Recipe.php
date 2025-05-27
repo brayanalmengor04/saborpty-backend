@@ -5,7 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Category;
-use App\Models\Ingredient;
+use App\Models\Ingredient; 
+
 class Recipe extends Model
 {
     /** @use HasFactory<\Database\Factories\RecipeFactory> */
@@ -18,7 +19,12 @@ class Recipe extends Model
     'rating',
     'image_url',
     'category_id',
-    ];
+    'steps'
+    ]; 
+    protected $casts = [
+        'steps' => 'array', 
+    ]; 
+
     public function category()
     {
     return $this->belongsTo(Category::class);
