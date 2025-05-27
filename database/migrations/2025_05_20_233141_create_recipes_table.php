@@ -19,7 +19,8 @@ return new class extends Migration
             $table->enum('difficulty', ['easy', 'medium', 'hard'])->default('medium');
             $table->float('rating')->default(0);
             $table->string('image_url')->nullable();
-            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');   
+            $table->json('steps')->nullable();
             $table->timestamps();
         });
     }

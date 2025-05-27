@@ -18,6 +18,12 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+        ]); 
+          // Ejecutar seeders en orden específico
+        $this->call([
+            CategorySeeder::class,
+            RecipeSeeder::class,
+            IngredientSeeder::class,
         ]);
     }
 }
