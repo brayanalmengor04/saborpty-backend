@@ -139,10 +139,15 @@ public function getAllFilterPreparationDescCategory($categoryName)
     return response()->json($result);
 }
 
-public function getAllFilterRating()
+public function getAllFilterRating($category = null)
 {
     $recipes = Recipe::with('category')
-        ->orderBy('rating', 'desc') 
+        ->when($category, function ($query) use ($category) {
+            $query->whereHas('category', function ($q) use ($category) {
+                $q->where('name', $category);
+            });
+        })
+        ->orderBy('rating', 'desc')
         ->get();
 
     if ($recipes->isEmpty()) {
@@ -162,12 +167,17 @@ public function getAllFilterRating()
     });
     return response()->json($result);
 }
-
-public function getAllFilterRecent()
+public function getAllFilterRecent($category = null)
 {
     $recipes = Recipe::with('category')
-        ->orderBy('created_at', 'desc') 
+        ->when($category, function ($query) use ($category) {
+            $query->whereHas('category', function ($q) use ($category) {
+                $q->where('name', $category);
+            });
+        })
+        ->orderBy('created_at', 'desc')
         ->get();
+
     if ($recipes->isEmpty()) {
         return response()->json(['message' => 'No recipes found'], 404);
     }
@@ -184,8 +194,6 @@ public function getAllFilterRecent()
             'createdAt' => $recipe->created_at->toDateTimeString(),
         ];
     });
-
     return response()->json($result);
 }
-
 }

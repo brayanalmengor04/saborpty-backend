@@ -17,8 +17,8 @@ Route::prefix('v1')->group(function () {
     Route::get('/recipes/filterby-category/{categoryName}/category',[RecipeController::class, 'getAllWithFilterCategoryName']); 
     Route::get('/recipes/filterby-preparation/asc/{categoryName}/category',[RecipeController::class,'getAllFilterPreparationAscCategory']);
     Route::get('/recipes/filterby-preparation/desc/{categoryName}/category',[RecipeController::class,'getAllFilterPreparationDescCategory']);
-    Route::get('/recipes/filterby-rating',[RecipeController::class,'getAllFilterRating']);
-    Route::get('/recipes/filterby-recent', [RecipeController::class, 'getAllFilterRecent']);
+    Route::get('/recipes/filterby-rating/{category?}', [RecipeController::class, 'getAllFilterRating']);
+    Route::get('/recipes/filterby-recent/{category?}', [RecipeController::class, 'getAllFilterRecent']);
 
 });  
 
