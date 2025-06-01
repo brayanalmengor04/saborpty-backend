@@ -34,6 +34,27 @@ class RecipeSeeder extends Seeder
                 'Rectificar la sal y dejar cocinar por 10 minutos adicionales.',
                 'Servir caliente, acompañado de arroz blanco si se desea.',
             ])
-        ]);
+        ]); 
+        Recipe::create([
+        'title' => 'Pizza de Plátano Maduro y Queso Azul',
+        'description' => 'Una fusión inesperada entre lo dulce del plátano maduro y la intensidad del queso azul, horneada sobre una base crujiente de masa artesanal.',
+        'duration_minutes' => 55,
+        'difficulty' => 'hard',
+        'rating' => 3.6,
+        'image_url' => 'https://res.cloudinary.com/dv5ruetn7/image/upload/v1747787720/category_soup_qfffhn.webp',
+        'category_id' => 4, 
+        'steps' => json_encode([
+            'Precalentar el horno a 220°C.',
+            'Extender la masa de pizza sobre una bandeja con papel para hornear.',
+            'Freír ligeramente las rodajas de plátano maduro hasta que estén doradas.',
+            'Cubrir la masa con salsa bechamel o crema ligera.',
+            'Agregar las rodajas de plátano distribuidas uniformemente.',
+            'Desmenuzar el queso azul sobre la pizza.',
+            'Hornear durante 20 minutos hasta que la masa esté dorada.',
+            'Retirar del horno, añadir rúcula fresca y un toque de miel si se desea.',
+            'Servir inmediatamente.'
+    ])
+]);
+
     }
 }

@@ -53,5 +53,139 @@ class RecipeController extends Controller
         });
 
         return response()->json($recipes);
+    }  
+
+
+    // Sin importar si esta en mayuscula o minuscula
+    public function getAllWithFilterCategoryName($categoryName)
+    {
+    $recipes = Recipe::whereHas('category', function ($query) use ($categoryName) {
+        $query->whereRaw('LOWER(name) = ?', [strtolower($categoryName)]);
+    })->with('category')->get();
+
+    if ($recipes->isEmpty()) {
+        return response()->json(['message' => "Not Found {$categoryName}"], 404);
     }
+    $result = $recipes->map(function ($recipe) {
+        return [
+            'id' => $recipe->id,
+            'title' => $recipe->title,
+            'description' => $recipe->description,
+            'categoryName' => $recipe->category->name,
+            'durationMinutes' => $recipe->duration_minutes,
+            'difficulty' => strtolower($recipe->difficulty),
+            'rating' => $recipe->rating,
+            'imageUrl' => $recipe->image_url,
+        ];
+    });
+    return response()->json($result);
+    }
+
+ public function getAllFilterPreparationAscCategory($categoryName)
+{
+    $recipes = Recipe::whereHas('category', function ($query) use ($categoryName) {
+        $query->whereRaw('LOWER(name) = ?', [strtolower($categoryName)]);
+    })
+    ->with('category')
+    ->orderBy('duration_minutes', 'asc')
+    ->get();
+
+    if ($recipes->isEmpty()) {
+        return response()->json(['message' => "Not Found {$categoryName}"], 404);
+    }
+
+    $result = $recipes->map(function ($recipe) {
+        return [
+            'id' => $recipe->id,
+            'title' => $recipe->title,
+            'description' => $recipe->description,
+            'categoryName' => $recipe->category->name,
+            'durationMinutes' => $recipe->duration_minutes,
+            'difficulty' => strtolower($recipe->difficulty),
+            'rating' => $recipe->rating,
+            'imageUrl' => $recipe->image_url,
+        ];
+    });
+
+    return response()->json($result);
+}
+
+public function getAllFilterPreparationDescCategory($categoryName)
+{
+    $recipes = Recipe::whereHas('category', function ($query) use ($categoryName) {
+        $query->whereRaw('LOWER(name) = ?', [strtolower($categoryName)]);
+    })
+    ->with('category')
+    ->orderBy('duration_minutes', 'desc')
+    ->get();
+
+    if ($recipes->isEmpty()) {
+        return response()->json(['message' => "Not Found {$categoryName}"], 404);
+    }
+
+    $result = $recipes->map(function ($recipe) {
+        return [
+            'id' => $recipe->id,
+            'title' => $recipe->title,
+            'description' => $recipe->description,
+            'categoryName' => $recipe->category->name,
+            'durationMinutes' => $recipe->duration_minutes,
+            'difficulty' => strtolower($recipe->difficulty),
+            'rating' => $recipe->rating,
+            'imageUrl' => $recipe->image_url,
+        ];
+    });
+
+    return response()->json($result);
+}
+
+public function getAllFilterRating()
+{
+    $recipes = Recipe::with('category')
+        ->orderBy('rating', 'desc') 
+        ->get();
+
+    if ($recipes->isEmpty()) {
+        return response()->json(['message' => 'No recipes found'], 404);
+    }
+    $result = $recipes->map(function ($recipe) {
+        return [
+            'id' => $recipe->id,
+            'title' => $recipe->title,
+            'description' => $recipe->description,
+            'categoryName' => $recipe->category->name,
+            'durationMinutes' => $recipe->duration_minutes,
+            'difficulty' => strtolower($recipe->difficulty),
+            'rating' => $recipe->rating,
+            'imageUrl' => $recipe->image_url,
+        ];
+    });
+    return response()->json($result);
+}
+
+public function getAllFilterRecent()
+{
+    $recipes = Recipe::with('category')
+        ->orderBy('created_at', 'desc') 
+        ->get();
+    if ($recipes->isEmpty()) {
+        return response()->json(['message' => 'No recipes found'], 404);
+    }
+    $result = $recipes->map(function ($recipe) {
+        return [
+            'id' => $recipe->id,
+            'title' => $recipe->title,
+            'description' => $recipe->description,
+            'categoryName' => $recipe->category->name,
+            'durationMinutes' => $recipe->duration_minutes,
+            'difficulty' => strtolower($recipe->difficulty),
+            'rating' => $recipe->rating,
+            'imageUrl' => $recipe->image_url,
+            'createdAt' => $recipe->created_at->toDateTimeString(),
+        ];
+    });
+
+    return response()->json($result);
+}
+
 }
