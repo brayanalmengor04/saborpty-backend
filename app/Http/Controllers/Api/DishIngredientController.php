@@ -28,13 +28,14 @@ class DishIngredientController extends Controller
     //     ]);
     // }
 
-    public function showIngredientsByRecipe($id)
+  public function showIngredientsByRecipe($id)
 {
-    $recipe = Recipe::with('ingredients')->find($id);
+    $recipe = Recipe::with(['ingredients', 'category'])->find($id);
 
     if (!$recipe) {
         return response()->json(['message' => 'Receta no encontrada'], 404);
     }
+
     $ingredients = $recipe->ingredients->map(function ($ingredient) {
         return [
             'id' => $ingredient->id,
@@ -46,6 +47,7 @@ class DishIngredientController extends Controller
             'updated_at' => $ingredient->updated_at ? $ingredient->updated_at->toIso8601String() : null,
         ];
     });
+
     $recipeData = [
         'id' => $recipe->id,
         'title' => $recipe->title,
@@ -55,7 +57,7 @@ class DishIngredientController extends Controller
         'rating' => (float) $recipe->rating,
         'image_url' => $recipe->image_url,
         'steps' => $recipe->steps,
-        // "category_name" => lo dejas para frontend o agregas después
+        'categoryName' => $recipe->category ? $recipe->category->name : null,
     ];
 
     return response()->json([
@@ -63,5 +65,6 @@ class DishIngredientController extends Controller
         'ingredients' => $ingredients,
     ]);
 }
+
 
 }
