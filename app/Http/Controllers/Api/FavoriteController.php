@@ -35,7 +35,6 @@ class FavoriteController extends Controller
         $deleted = Favorite::where('firebase_uid', $firebase_uid)
             ->where('recipe_id', $recipe_id)
             ->delete();
-
         return response()->json([
             'message' => $deleted ? 'Favorito eliminado' : 'Favorito no encontrado',
         ]);

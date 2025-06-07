@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->text('description')->nullable();
             $table->integer('duration_minutes');
-            $table->enum('difficulty', ['easy', 'medium', 'hard'])->default('medium');
+            $table->enum('difficulty', ['facil', 'medio', 'dificil'])->default('medio');
             $table->float('rating')->default(0);
             $table->string('image_url')->nullable();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');   
