@@ -22,8 +22,9 @@ class DatabaseSeeder extends Seeder
           // Ejecutar seeders en orden específico
         $this->call([
             CategorySeeder::class,
-            RecipeSeeder::class,
             IngredientSeeder::class,
+            RecipeSeeder::class, 
+            DishIngredientSeeder::class
         ]);
     }
 }

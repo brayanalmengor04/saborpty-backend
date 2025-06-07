@@ -4,7 +4,7 @@ use App\Http\Controllers\Api\RecipeController;
 use App\Http\Controllers\Api\CategoryController; 
 use App\Http\Controllers\Api\IngredientController;
 use App\Http\Controllers\Api\FavoriteController;
-
+use App\Http\Controllers\Api\DishIngredientController;
 //https://saborespty/api/v1/categories 
 // Grupo de rutas con prefijo 'api/v1' para versión de la API
 Route::prefix('v1')->group(function () {
@@ -21,7 +21,11 @@ Route::prefix('v1')->group(function () {
 
 });  
 Route::prefix('v1')->group(function () {
-    Route::get('/recipe/{id}/ingredients', [IngredientController::class, 'getIngredientsByRecipe']);
+    // Route::get('/recipe/{id}/ingredients', [IngredientController::class, 'getIngredientsByRecipe']); 
+    // Route::get('/recipe/{id}/ingredients', [IngredientController::class, 'getIngredientsByRecipe']);
+   
+   Route::get('/dish-ingredients', [DishIngredientController::class, 'index']);
+   Route::get('/recipes/{id}/ingredients', [DishIngredientController::class, 'showIngredientsByRecipe']);
 });
 // Favoritos por usuario firebase
 Route::prefix('v1')->group(function () {

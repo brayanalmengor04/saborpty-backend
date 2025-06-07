@@ -1,0 +1,38 @@
+[
+  {
+    "name": "Tradicionales",
+    "slug": "tradicionales",
+    "image_url": "https://res.cloudinary.com/dv5ruetn7/image/upload/v1747787721/category_traditional_idghfz.webp",
+    "description": "Platos clásicos de la cocina tradicional."
+  },
+  {
+    "name": "Bebidas Típicas",
+    "slug": "bebidas-tipicas",
+    "image_url": "https://res.cloudinary.com/dv5ruetn7/image/upload/v1747787720/category_typicaldrinks_jxepwj.webp",
+    "description": "Bebidas populares locales y culturales."
+  },
+  {
+    "name": "Mariscos",
+    "slug": "mariscos",
+    "image_url": "https://res.cloudinary.com/dv5ruetn7/image/upload/v1747787720/category_seafood_hwg6bw.webp",
+    "description": "Deliciosos platos hechos con mariscos frescos."
+  },
+  {
+    "name": "Sopas",
+    "slug": "sopas",
+    "image_url": "https://res.cloudinary.com/dv5ruetn7/image/upload/v1747787720/category_soup_qfffhn.webp",
+    "description": "Sopas cálidas y reconfortantes para todos los gustos."
+  },
+  {
+    "name": "Postres",
+    "slug": "postres",
+    "image_url": "https://res.cloudinary.com/dv5ruetn7/image/upload/v1747787720/category_desserts_adwwgp.webp",
+    "description": "Dulces para terminar tu comida."
+  },
+  {
+    "name": "Platos Rápidos",
+    "slug": "platos-rapidos",
+    "image_url": "https://res.cloudinary.com/dv5ruetn7/image/upload/v1747787720/category_quicksdishes_x0g7v4.webp",
+    "description": "Comidas rápidas y fáciles para días ocupados."
+  }
+]
