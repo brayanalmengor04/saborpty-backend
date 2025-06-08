@@ -17,7 +17,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->integer('duration_minutes');
             $table->enum('difficulty', ['facil', 'medio', 'dificil'])->default('medio');
-            $table->float('rating')->default(0);
+            $table->float('rating')->default(0); 
+            $table->string('youtube_url')->nullable();
             $table->string('image_url')->nullable();
             $table->foreignId('category_id')->constrained()->onDelete('cascade');   
             $table->json('steps')->nullable();

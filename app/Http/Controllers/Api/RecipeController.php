@@ -48,7 +48,7 @@ class RecipeController extends Controller
                 'durationMinutes' => $recipe->duration_minutes,
                 'difficulty' => strtolower($recipe->difficulty),
                 'rating' => $recipe->rating,
-                'imageUrl' => $recipe->image_url,
+                'imageUrl' => $recipe->image_url, 
             ];
         });
 
