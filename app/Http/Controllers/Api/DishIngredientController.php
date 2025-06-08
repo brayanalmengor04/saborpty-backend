@@ -57,7 +57,8 @@ class DishIngredientController extends Controller
         'rating' => (float) $recipe->rating,
         'image_url' => $recipe->image_url,
         'steps' => $recipe->steps,
-        'categoryName' => $recipe->category ? $recipe->category->name : null,
+        'categoryName' => $recipe->category ? $recipe->category->name : null, 
+        'youtube_url'=>$recipe->youtube_url,
     ];
 
     return response()->json([

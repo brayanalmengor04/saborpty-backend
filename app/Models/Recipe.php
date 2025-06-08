@@ -17,7 +17,8 @@ class Recipe extends Model
         'duration_minutes',
         'difficulty',
         'rating',
-        'image_url',
+        'image_url', 
+        'youtube_url',
         'category_id',
         'steps'
     ];
