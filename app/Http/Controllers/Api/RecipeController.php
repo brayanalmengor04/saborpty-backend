@@ -196,7 +196,6 @@ public function getAllFilterRecent($category = null)
     });
     return response()->json($result);
 }
-
 public function rateRecipe(Request $request, $recipeId)
 {
     // Validar la entrada del request
@@ -205,14 +204,11 @@ public function rateRecipe(Request $request, $recipeId)
         'rating' => 'required|numeric|min:0|max:5',
     ]);
 
-    // Buscar la receta
     $recipe = Recipe::find($recipeId);
     if (!$recipe) {
         return response()->json(['message' => 'Recipe not found'], 404);
     }
-
-    // Crear o actualizar rating
-    $rating = RecipeRating::updateOrCreate(
+    RecipeRating::updateOrCreate(
         [
             'recipe_id' => $recipeId,
             'firebase_uid' => $validated['uid'],
@@ -221,14 +217,14 @@ public function rateRecipe(Request $request, $recipeId)
             'rating' => $validated['rating'],
         ]
     );
-    // Recalcular promedio
     $average = RecipeRating::where('recipe_id', $recipeId)->avg('rating');
     $recipe->rating = round($average, 2);
     $recipe->save();
-    // Responder con éxito
+    $recipe->refresh();
     return response()->json([
         'message' => 'Rating saved successfully',
         'averageRating' => $recipe->rating,
+        'ratingCount' => RecipeRating::where('recipe_id', $recipeId)->count(),
     ]);
 }
 }
