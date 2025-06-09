@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\IngredientController;
 use App\Http\Controllers\Api\FavoriteController;
 use App\Http\Controllers\Api\DishIngredientController; 
+use App\Http\Controllers\Api\ActivityController; 
 
 //https://saborespty/api/v1/categories 
 // Grupo de rutas con prefijo 'api/v1' para versión de la API
@@ -36,4 +37,8 @@ Route::prefix('v1')->group(function () {
     Route::post('/favorites', [FavoriteController::class, 'store']);
     Route::get('/favorites/{firebase_uid}', [FavoriteController::class, 'getByUser']);
     Route::delete('/favorites/{firebase_uid}/recipe/{recipe_id}', [FavoriteController::class, 'destroy']);
+});
+
+Route::prefix('v1')->group(function () {
+   Route::get('/activities/{firebase_uid}', [ActivityController::class, 'getByUser']);
 });

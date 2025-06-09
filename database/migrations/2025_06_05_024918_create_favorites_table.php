@@ -16,7 +16,8 @@ return new class extends Migration
              $table->string('firebase_uid'); 
             $table->foreignId('recipe_id')->constrained('recipes')->onDelete('cascade'); 
             $table->timestamps();
-             $table->unique(['firebase_uid', 'recipe_id']); //Evitar duplicados
+             $table->unique(['firebase_uid', 'recipe_id']); 
+             
         });
     }
 
