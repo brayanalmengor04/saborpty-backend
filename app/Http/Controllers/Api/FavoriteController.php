@@ -2,25 +2,37 @@
 
 namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;  
-use App\Models\Favorite;
+use App\Models\Favorite; 
+use App\Models\Activity;
 use Illuminate\Http\Request; 
 
 
 class FavoriteController extends Controller
 {
-   // POST: /favorites
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'firebase_uid' => 'required|string',
-            'recipe_id' => 'required|exists:recipes,id',
-        ]);
-        $favorite = Favorite::firstOrCreate($validated);
-        return response()->json([
-            'message' => 'Receta agregada a favoritos',
-            'data' => $favorite->load('recipe') // incluye la receta relacionada
-        ]);
+ 
+public function store(Request $request)
+{
+    $validated = $request->validate([
+        'firebase_uid' => 'required|string',
+        'recipe_id' => 'required|exists:recipes,id',
+    ]);
+    $favorite = Favorite::firstOrCreate($validated);
+    $favorite->load('recipe');
+    $recipe = $favorite->recipe;
+    if (!$recipe) {
+        return response()->json(['message' => 'Receta no encontrada.'], 404);
     }
+    Activity::create([
+        'firebase_uid' => $validated['firebase_uid'],
+        'type' => 'favorite',
+        'description' => "Guardaste {$recipe->title}",
+        'data' => ['recipe_id' => $recipe->id],
+    ]);
+    return response()->json([
+        'message' => 'Receta agregada a favoritos',
+        'data' => $favorite,
+    ], 201); // 201: Created
+}
     // GET: /favorites/{firebase_uid}
     public function getByUser($firebase_uid)
     {
