@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Recipe;
-
+use App\Models\Recipe; 
+use App\Models\RecipeRating;
 class RecipeController extends Controller
 {
     // POST: Crear receta usando category_id por URL (sin validación personalizada)
@@ -195,5 +195,40 @@ public function getAllFilterRecent($category = null)
         ];
     });
     return response()->json($result);
+}
+
+public function rateRecipe(Request $request, $recipeId)
+{
+    // Validar la entrada del request
+    $validated = $request->validate([
+        'uid' => 'required|string',
+        'rating' => 'required|numeric|min:0|max:5',
+    ]);
+
+    // Buscar la receta
+    $recipe = Recipe::find($recipeId);
+    if (!$recipe) {
+        return response()->json(['message' => 'Recipe not found'], 404);
+    }
+
+    // Crear o actualizar rating
+    $rating = RecipeRating::updateOrCreate(
+        [
+            'recipe_id' => $recipeId,
+            'firebase_uid' => $validated['uid'],
+        ],
+        [
+            'rating' => $validated['rating'],
+        ]
+    );
+    // Recalcular promedio
+    $average = RecipeRating::where('recipe_id', $recipeId)->avg('rating');
+    $recipe->rating = round($average, 2);
+    $recipe->save();
+    // Responder con éxito
+    return response()->json([
+        'message' => 'Rating saved successfully',
+        'averageRating' => $recipe->rating,
+    ]);
 }
 }
