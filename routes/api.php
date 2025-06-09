@@ -4,7 +4,8 @@ use App\Http\Controllers\Api\RecipeController;
 use App\Http\Controllers\Api\CategoryController; 
 use App\Http\Controllers\Api\IngredientController;
 use App\Http\Controllers\Api\FavoriteController;
-use App\Http\Controllers\Api\DishIngredientController;
+use App\Http\Controllers\Api\DishIngredientController; 
+
 //https://saborespty/api/v1/categories 
 // Grupo de rutas con prefijo 'api/v1' para versión de la API
 Route::prefix('v1')->group(function () {
@@ -12,6 +13,9 @@ Route::prefix('v1')->group(function () {
     Route::get('/recipes', [RecipeController::class, 'getAllRaw']);
     Route::get('/recipes/enriched/all', [RecipeController::class, 'getAllWithCategoryName']); 
     Route::post('/recipes/by-category/{id}', [RecipeController::class, 'storeByCategory']);  
+    // Rating
+    Route::put('/recipes/{recipeId}/rate', [RecipeController::class, 'rateRecipe']);
+
     // Filtrados
     Route::get('/recipes/filterby-category/{categoryName}/category',[RecipeController::class, 'getAllWithFilterCategoryName']); 
     Route::get('/recipes/filterby-preparation/asc/{categoryName}/category',[RecipeController::class,'getAllFilterPreparationAscCategory']);
