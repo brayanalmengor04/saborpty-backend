@@ -28,7 +28,6 @@ Route::prefix('v1')->group(function () {
 Route::prefix('v1')->group(function () {
     // Route::get('/recipe/{id}/ingredients', [IngredientController::class, 'getIngredientsByRecipe']); 
     // Route::get('/recipe/{id}/ingredients', [IngredientController::class, 'getIngredientsByRecipe']);
-   
    Route::get('/dish-ingredients', [DishIngredientController::class, 'index']);
    Route::get('/recipes/{id}/ingredients', [DishIngredientController::class, 'showIngredientsByRecipe']);
 });
@@ -40,5 +39,11 @@ Route::prefix('v1')->group(function () {
 });
 
 Route::prefix('v1')->group(function () {
-   Route::get('/activities/{firebase_uid}', [ActivityController::class, 'getByUser']);
+   Route::get('/activities/{firebase_uid}', [ActivityController::class, 'getByUser']); 
+//    Deleted all activity by user
+   Route::delete('/activities/{firebase_uid}', [ActivityController::class, 'deleteByUser']);  
+
+//    Delete AcitivityById
+   Route::delete('/activities/{firebase_uid}/item/{id}', [ActivityController::class, 'deleteById']);
+
 });

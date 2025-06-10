@@ -42,13 +42,30 @@ public function store(Request $request)
         return response()->json($favorites);
     }
     // DELETE: /favorites/{firebase_uid}/recipe/{recipe_id}
-    public function destroy($firebase_uid, $recipe_id)
-    {
-        $deleted = Favorite::where('firebase_uid', $firebase_uid)
-            ->where('recipe_id', $recipe_id)
-            ->delete();
+   public function destroy($firebase_uid, $recipe_id)
+{
+    $favorite = Favorite::where('firebase_uid', $firebase_uid)
+        ->where('recipe_id', $recipe_id)
+        ->first();
+
+    if (!$favorite) {
         return response()->json([
-            'message' => $deleted ? 'Favorito eliminado' : 'Favorito no encontrado',
+            'message' => 'Favorito no encontrado',
         ]);
     }
+    $favorite->load('recipe');
+    $recipe = $favorite->recipe;
+    $favorite->delete();
+    if ($recipe) {
+        Activity::create([
+            'firebase_uid' => $firebase_uid,
+            'type' => 'favorite_deleted',
+            'description' => "Eliminaste {$recipe->title}",
+            'data' => ['recipe_id' => $recipe->id],
+        ]);
+    }
+    return response()->json([
+        'message' => 'Favorito eliminado',
+    ]);
+}
 }
