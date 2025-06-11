@@ -40,5 +40,4 @@ public function deleteById($firebase_uid, $id)
     $activity->delete();
     return response()->json(['message' => 'Actividad eliminada correctamente.']);
 }
-
 }

@@ -4,7 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Recipe; 
+use App\Models\Recipe;  
+use App\Models\Activity; 
 use App\Models\RecipeRating;
 class RecipeController extends Controller
 {
@@ -198,12 +199,10 @@ public function getAllFilterRecent($category = null)
 }
 public function rateRecipe(Request $request, $recipeId)
 {
-    // Validar la entrada del request
     $validated = $request->validate([
         'uid' => 'required|string',
         'rating' => 'required|numeric|min:0|max:5',
     ]);
-
     $recipe = Recipe::find($recipeId);
     if (!$recipe) {
         return response()->json(['message' => 'Recipe not found'], 404);
@@ -221,6 +220,16 @@ public function rateRecipe(Request $request, $recipeId)
     $recipe->rating = round($average, 2);
     $recipe->save();
     $recipe->refresh();
+    Activity::create([
+        'firebase_uid' => $validated['uid'],
+        'type' => 'recipe_rate',
+        'description' => "Calificaste {$recipe->title} con {$validated['rating']} estrellas.",
+        'data' => [
+            'recipe_id' => $recipe->id,
+            'rating' => $validated['rating'],
+            'average' => $recipe->rating,
+        ],
+    ]);
     return response()->json([
         'message' => 'Rating saved successfully',
         'averageRating' => $recipe->rating,
