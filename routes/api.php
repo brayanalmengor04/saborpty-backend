@@ -44,6 +44,7 @@ Route::prefix('v1')->group(function () {
    Route::delete('/activities/{firebase_uid}', [ActivityController::class, 'deleteByUser']);  
 
 //    Delete AcitivityById
-   Route::delete('/activities/{firebase_uid}/item/{id}', [ActivityController::class, 'deleteById']);
+   Route::delete('/activities/{firebase_uid}/item/{id}', [ActivityController::class, 'deleteById']); 
+   // Ratting activity
 
 });
